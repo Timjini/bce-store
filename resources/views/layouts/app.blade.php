@@ -13,16 +13,29 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    <!-- <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
-
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @livewireStyles
+    
+    <style>
+        .notification-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background-color: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 
-<body class="font-sans antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-
+<body class="font-sans antialiased bg-[#6991d6] text-gray-900 dark:text-gray-100">
 
     @if(session('success'))
     <x-flash type="success"
@@ -42,42 +55,41 @@
         :message="$errors->all()" />
     @endif
 
-
-
     <div class="flex flex-col md:flex-row h-screen relative overflow-hidden">
-            <div class="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-[#c4d7ff]/40 to-[#ffffff]/0 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-20 right-32 w-96 h-96 bg-gradient-to-l from-[#d4f1ff]/50 to-[#ffffff]/0 rounded-full blur-3xl"></div>
-            <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(255,255,255,0.2),transparent_70%)]"></div>
+        
         @include('layouts.navigation')
-        <div class="z-10 flex-1 p-4 overflow-auto">
-            @isset($header)
-            <header class="mt-4 p-1">
-                <div class="max-w-3xl sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
-            @endisset
+        
+        <div class="z-10 flex-1 flex flex-col">
+            <!-- Top Navigation Bar -->
+            @include('layouts.top-navigation')
+            <!-- Main Content Area -->
+            <div class="flex-1 p-4 overflow-auto">
+                @isset($header)
+                <header class="mt-4 p-1">
+                    <div class="max-w-3xl sm:px-6 lg:px-8">
+                        {{ $header }}
+                    </div>
+                </header>
+                @endisset
 
-            <main>
-                {{ $slot }}
-            </main>
+                <main>
+                    {{ $slot }}
+                </main>
+            </div>
         </div>
     </div>
-    @livewireScripts
-<script>
-    document.addEventListener('livewire:init', () => {
-        Livewire.on('closeModal', () => {
-            Livewire.emit('resetSelectedItemId');
-        });
-        
-        Livewire.on('costAdded', () => {
-            Livewire.emit('refresh');
-        });
-    });
-
-</script>
     
-
+    @livewireScripts
+    <script>
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('closeModal', () => {
+                Livewire.emit('resetSelectedItemId');
+            });
+            
+            Livewire.on('costAdded', () => {
+                Livewire.emit('refresh');
+            });
+        });
+    </script>
 </body>
-
 </html>

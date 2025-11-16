@@ -12,6 +12,24 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function hasAccess($controller, $action): bool
+    {
+        if (! $this->role) {
+            return false;
+        }
+
+        return $this->role
+            ->permissions()
+            ->where('controller', $controller)
+            ->where('action', $action)
+            ->exists();
+    }
+
     /**
      * The attributes that are mass assignable.
      *
