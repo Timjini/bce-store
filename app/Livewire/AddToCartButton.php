@@ -43,7 +43,7 @@ class AddToCartButton extends Component
             Session::put('cart_id', $cart->id);
             return $cart;
         }
-        
+
         return Cart::firstOrCreate(['id' => $cartId]);
     }
 

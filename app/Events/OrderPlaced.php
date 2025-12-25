@@ -16,14 +16,16 @@ class OrderPlaced
 
     public $order;
     public $cart;
+    public $data;
 
     /**
      * Create a new event instance.
      */
-    public function __construct($order, $cart)
+    public function __construct($order, $cart, $data)
     {
         $this->order = $order;
         $this->cart = $cart;
+        $this->data = $data;
     }
 
     /**

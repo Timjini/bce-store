@@ -21,6 +21,6 @@ class StoreOrder
      */
     public function handle(OrderPlaced $event): void
     {
-        //
+        info("Store Order Listener Triggered". $event->order->id);
     }
 }

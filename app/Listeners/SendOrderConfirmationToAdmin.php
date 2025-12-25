@@ -21,6 +21,6 @@ class SendOrderConfirmationToAdmin
      */
     public function handle(OrderPlaced $event): void
     {
-        //
+        info("Send Order Confirmation To Admin Listener Triggered". $event->order);
     }
 }
