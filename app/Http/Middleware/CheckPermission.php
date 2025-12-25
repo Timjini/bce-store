@@ -16,12 +16,12 @@ class CheckPermission
             abort(401);
         }
 
-        $controller = class_basename($request->route()->getController());
-        $action = $request->route()->getActionMethod();
+        // $controller = class_basename($request->route()->getController());
+        // $action = $request->route()->getActionMethod();
 
-        if (!$user->hasAccess($controller, $action)) {
-            abort(403, 'Unauthorized access');
-        }
+        // if (!$user->hasAccess($controller, $action)) {
+        //     abort(403, 'Unauthorized access');
+        // }
 
         return $next($request);
     }
