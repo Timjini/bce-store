@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BCE Industrial | Precision Tools & Components</title>
+     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -289,6 +290,18 @@
 
     <!-- Footer -->
     <x-common.footer />
+    
+     @livewireScripts
+        
+        <script>
+            Livewire.on('menuStateChanged', (isOpen) => {
+                if (isOpen) {
+                    document.body.classList.add('menu-open');
+                } else {
+                    document.body.classList.remove('menu-open');
+                }
+            });
+        </script>
 
 </body>
 </html>

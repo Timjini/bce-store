@@ -169,3 +169,81 @@
 .leading-5{
     color: #242424;
 }
+
+/**/
+
+            .product-card {
+                transition: all 0.3s ease;
+                overflow: hidden;
+            }
+            
+            .product-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            }
+            
+            .product-image {
+                height: 200px;
+                background-color: #f8fafc;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+            }
+            
+            .product-image img {
+                max-height: 100%;
+                max-width: 100%;
+                object-fit: contain;
+                transition: transform 0.5s ease;
+            }
+            
+            .product-card:hover .product-image img {
+                transform: scale(1.05);
+            }
+            
+            .btn-add-to-cart {
+                background-color: #3b82f6;
+                transition: background-color 0.3s ease;
+            }
+            
+            .btn-add-to-cart:hover {
+                background-color: #2563eb;
+            }
+            
+            .btn-buy-now {
+                background-color: #10b981;
+                transition: background-color 0.3s ease;
+            }
+            
+            .btn-buy-now:hover {
+                background-color: #059669;
+            }
+            
+            .price-tag {
+                background: linear-gradient(135deg, #3b82f6, #6366f1);
+                color: white;
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-weight: 600;
+                display: inline-block;
+            }
+            
+            .description-truncate {
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+            
+            @media (max-width: 768px) {
+                .product-grid {
+                    grid-template-columns: repeat(2, 1fr) !important;
+                }
+            }
+            
+            @media (max-width: 640px) {
+                .product-grid {
+                    grid-template-columns: 1fr !important;
+                }
+            }

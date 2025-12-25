@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('premissions', function (Blueprint $table) {
+        Schema::create('purchases', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignUuid('supplier_id')->constrained('suppliers')->cascadeOnDelete();
+            $table->string('reference')->nullable();
+            $table->decimal('total', 10, 2)->default(0);
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('premissions');
+        Schema::dropIfExists('purchases');
     }
 };

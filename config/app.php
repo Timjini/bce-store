@@ -122,5 +122,11 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+    
+    'chase' => [
+    'api_key' => env('CHASE_API_KEY'),
+    'merchant_id' => env('CHASE_MERCHANT_ID'),
+    'sandbox' => env('CHASE_SANDBOX', true),
+],
 
 ];
