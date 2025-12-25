@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Visitor;
 
+use App\Events\OrderPlaced;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OrderStoreRequest;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Address;
@@ -54,67 +56,83 @@ class VisitorOrderController extends Controller
          return view('visitor.orders.create', compact('cart', 'subtotal', 'tax', 'total', 'states'));
     }
 
-    public function store(Request $request)
-    {
+    // public function store(Request $request)
+    // {
+    //     $cart = $this->getCart();
+    //     if ($cart->items->isEmpty()) {
+    //         return redirect()->route('cart.show')->with('error', 'Cart is empty');
+    //     }
+
+
+    //     //TODO : Too much business logic here!
+    //     // Create order
+    //     $order = Order::create([
+    //         'user_id' => null, // visitor checkout
+    //         'status' => 'pending',
+    //         'total' => $cart->items->sum(fn($i) => $i->price * $i->quantity),
+    //     ]);
+        
+    //     // Save order items
+    //     foreach ($cart->items as $item) {
+    //         OrderItem::create([
+    //             'order_id' => $order->id,
+    //             'product_id' => $item->product_id,
+    //             'quantity' => $item->quantity,
+    //             'price' => $item->price,
+    //             'subtotal' => $item->quantity * $item->price,
+    //         ]);
+    //     }
+        
+
+    //     //TODO: need to remove the addresses from here
+    //     // Save addresses
+    //     $shipping = $request('shipping');
+    //     $billing = $request('billing');
+        
+    //     // Shipping address
+    //     Address::create([
+    //         'order_id' => $order->id,
+    //         'type' => 'shipping',
+    //         'address_line1' => $shipping['address'],
+    //         'address_line2' => $shipping['address2'] ?? null,
+    //         'city' => $shipping['city'],
+    //         'state' => $shipping['state'],
+    //         'zip' => $shipping['zip'],
+    //         'country' => $shipping['country'],
+    //         'contact_name' => $shipping['contact_name'] ?? null,
+    //         'contact_phone' => $shipping['contact_phone'] ?? null,
+    //     ]);
+        
+        
+    //     Address::create([
+    //         'order_id' => $order->id,
+    //         'type' => 'billing',
+    //         'address_line1' => $billing['address'],
+    //         'address_line2' => $billing['address2'] ?? null,
+    //         'city' => $billing['city'],
+    //         'state' => $billing['state'],
+    //         'zip' => $billing['zip'],
+    //         'country' => $billing['country'],
+    //     ]);
+        
+    //     //TO DO: another logic to be handled in event
+    //     // Clear cart
+    //     $cart->items()->delete();
+    //     Session::forget('cart_id');
+        
+    //     return redirect()->route('orders.show', $order)->with('success', 'Order placed successfully');
+    // }
+
+    public function store(OrderStoreRequest $request){
+
         $cart = $this->getCart();
         if ($cart->items->isEmpty()) {
             return redirect()->route('cart.show')->with('error', 'Cart is empty');
         }
-
-
-        // Create order
-        $order = Order::create([
-            'user_id' => null, // visitor checkout
-            'status' => 'pending',
-            'total' => $cart->items->sum(fn($i) => $i->price * $i->quantity),
-        ]);
         
-        // Save order items
-        foreach ($cart->items as $item) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $item->product_id,
-                'quantity' => $item->quantity,
-                'price' => $item->price,
-                'subtotal' => $item->quantity * $item->price,
-            ]);
-        }
-        
-        // Save addresses
-        $shipping = request('shipping');
-        $billing = request('billing');
-        
-        // Shipping address
-        Address::create([
-            'order_id' => $order->id,
-            'type' => 'shipping',
-            'address_line1' => $shipping['address'],
-            'address_line2' => $shipping['address2'] ?? null,
-            'city' => $shipping['city'],
-            'state' => $shipping['state'],
-            'zip' => $shipping['zip'],
-            'country' => $shipping['country'],
-            'contact_name' => $shipping['contact_name'] ?? null,
-            'contact_phone' => $shipping['contact_phone'] ?? null,
-        ]);
-        
-        
-        Address::create([
-            'order_id' => $order->id,
-            'type' => 'billing',
-            'address_line1' => $shipping['address'],
-            'address_line2' => $shipping['address2'] ?? null,
-            'city' => $shipping['city'],
-            'state' => $shipping['state'],
-            'zip' => $shipping['zip'],
-            'country' => $shipping['country'],
-        ]);
-        
-        // Clear cart
-        $cart->items()->delete();
-        Session::forget('cart_id');
-        
-        return redirect()->route('orders.show', $order)->with('success', 'Order placed successfully');
+        $order = null;
+        event(new OrderPlaced($order, $cart));
+        return redirect()->route('visitor.orders.show', $order)->with('success', 'Order placed successfully');
     }
 
     public function show(Order $order)
